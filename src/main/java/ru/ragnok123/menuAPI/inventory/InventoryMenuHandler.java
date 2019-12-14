@@ -24,6 +24,7 @@ public class InventoryMenuHandler implements Listener{
 	}
 	
 	public static HashMap<String, InventoryMenu> menus = new HashMap<String, InventoryMenu>();
+	public static HashMap<UUID, InventoryMenu> pmenus = new HashMap<UUID, InventoryMenu>();
 	
 	public static InventoryMenu getMenuById(@NonNull String id) {
 		if(menus.containsKey(id)) {
@@ -33,10 +34,8 @@ public class InventoryMenuHandler implements Listener{
 	}
 	
 	public static InventoryMenu getMenuByPlayer(@NonNull UUID uuid) {
-		for(InventoryMenu menu : menus.values()) {
-			if(menu.getInventory(uuid) != null) {
-				return menu;
-			}
+		if(pmenus.containsKey(uuid)) {
+			return pmenus.get(uuid);
 		}
 		return null;
 	}

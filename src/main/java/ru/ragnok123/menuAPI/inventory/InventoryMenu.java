@@ -39,6 +39,7 @@ public class InventoryMenu {
 		MenuInventory inv = new MenuInventory(vec,this);
 		player.addWindow(inv);
 		inventories.put(player.getUniqueId(), inv);
+		InventoryMenuHandler.pmenus.put(player.getUniqueId(),this);
 		openMainCategory(player);
 	}
 	
@@ -69,12 +70,14 @@ public class InventoryMenu {
 	
 	public void destroy(@NonNull Player player) {
 		inventories.remove(player.getUniqueId());
+		InventoryMenuHandler.pmenus.remove(player.getUniqueId());
 		Vector3 vec = new Vector3(player.x, player.y -2, player.z);
 		player.level.sendBlocks(new Player[] {player}, new Vector3[] {vec});
 	}
 	
 	public void forceDestroy(@NonNull Player player) {
 		player.removeWindow(getInventory(player.getUniqueId()));
+		destroy(player);
 	}
 	
 	public void setMainCategory(@NonNull InventoryCategory category) {
