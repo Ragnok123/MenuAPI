@@ -1,6 +1,6 @@
 package ru.ragnok123.menuAPI.inventory;
 
-import cn.nukkit.Player;
+import cn.nukkit.player.Player;
 import cn.nukkit.event.inventory.InventoryClickEvent;
 import cn.nukkit.item.Item;
 

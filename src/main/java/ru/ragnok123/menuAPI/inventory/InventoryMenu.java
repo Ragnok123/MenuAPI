@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.*;
 
-import cn.nukkit.Player;
+import cn.nukkit.player.Player;
+import cn.nukkit.registry.BlockRegistry;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockChest;
+import cn.nukkit.block.BlockIds;
 import cn.nukkit.inventory.Inventory;
-import cn.nukkit.level.GlobalBlockPalette;
-import cn.nukkit.math.Vector3;
+import cn.nukkit.level.BlockPosition;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.BlockEntityDataPacket;
@@ -35,20 +37,20 @@ public class InventoryMenu {
 	}
 	
 	public void show(@NonNull Player player) {
-		Vector3 vec = createInventory(player);
+		BlockPosition vec = createInventory(player);
 		MenuInventory inv = new MenuInventory(vec,this);
 		player.addWindow(inv);
-		inventories.put(player.getUniqueId(), inv);
-		InventoryMenuHandler.pmenus.put(player.getUniqueId(),this);
+		inventories.put(player.getServerId(), inv);
+		InventoryMenuHandler.pmenus.put(player.getServerId(),this);
 		openMainCategory(player);
 	}
 	
-	private Vector3 createInventory(Player player) {
+	private BlockPosition createInventory(Player player) {
 		UpdateBlockPacket pk1 = new UpdateBlockPacket();
         pk1.x = (int) player.x;
         pk1.y = (int) player.y - 2;
         pk1.z = (int) player.z;
-        pk1.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(Block.CHEST,0);
+        pk1.blockRuntimeId = BlockRegistry.get().getRuntimeId(Block.get(BlockIds.CHEST));
         pk1.dataLayer = 0;
         pk1.flags = UpdateBlockPacket.FLAG_NONE;
         player.dataPacket(pk1);
@@ -65,18 +67,18 @@ public class InventoryMenu {
         } catch (IOException ex) {
         }
         player.dataPacket(pk2);
-        return new Vector3(player.x, player.y - 2, player.z);
+        return new BlockPosition((int)player.x, (int)player.y - 2, (int)player.z);
 	}
 	
 	public void destroy(@NonNull Player player) {
-		inventories.remove(player.getUniqueId());
-		InventoryMenuHandler.pmenus.remove(player.getUniqueId());
-		Vector3 vec = new Vector3(player.x, player.y -2, player.z);
-		player.level.sendBlocks(new Player[] {player}, new Vector3[] {vec});
+		inventories.remove(player.getServerId());
+		InventoryMenuHandler.pmenus.remove(player.getServerId());
+		BlockPosition pos = new BlockPosition((int)player.x, (int)player.y - 2, (int)player.z);
+		player.level.sendBlocks(new Player[] {player}, new BlockPosition[] {pos});
 	}
 	
 	public void forceDestroy(@NonNull Player player) {
-		player.removeWindow(getInventory(player.getUniqueId()));
+		player.removeWindow(getInventory(player.getServerId()));
 		destroy(player);
 	}
 	

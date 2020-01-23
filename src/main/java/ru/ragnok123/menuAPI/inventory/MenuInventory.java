@@ -4,13 +4,13 @@ import cn.nukkit.inventory.ContainerInventory;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.InventoryType;
-import cn.nukkit.item.Item;
-import cn.nukkit.math.Vector3;
+import cn.nukkit.level.BlockPosition;
+import cn.nukkit.math.Vector3f;
 
 import java.util.Map;
 
 public final class MenuInventory extends ContainerInventory {
-	public MenuInventory(Vector3 holder, InventoryMenu menu) {
+	public MenuInventory(BlockPosition holder, InventoryMenu menu) {
 		super(new Holder(holder.x, holder.y, holder.z), InventoryType.CHEST);
 		InventoryCategory category = menu.getMainCategory();
 		for(Map.Entry<Integer,ItemData> entry : category.itemDataMap().entrySet()) {
@@ -20,7 +20,7 @@ public final class MenuInventory extends ContainerInventory {
 		}
 	}
 
-	static final class Holder extends Vector3 implements InventoryHolder {
+	static final class Holder extends Vector3f implements InventoryHolder {
 
 		private Holder(double x, double y, double z) {
 			super(x, y, z);

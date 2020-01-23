@@ -1,6 +1,6 @@
 package ru.ragnok123.menuAPI.inventory;
 
-import cn.nukkit.Player;
+import cn.nukkit.player.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
@@ -56,9 +56,9 @@ public class InventoryMenuHandler implements Listener{
 	public void onClick(InventoryClickEvent event) {
 		Player player = event.getPlayer();
 		Inventory inv = event.getInventory();
-		if(getMenuByPlayer(player.getUniqueId()) != null) {
+		if(getMenuByPlayer(player.getServerId()) != null) {
 			if(inv instanceof MenuInventory) {
-				InventoryMenu menu = getMenuByPlayer(player.getUniqueId());
+				InventoryMenu menu = getMenuByPlayer(player.getServerId());
 				int slot = event.getSlot();
 				event.setCancelled();
 				if(menu.getCurrentCategory().getItemClick(slot) != null) {
@@ -73,8 +73,8 @@ public class InventoryMenuHandler implements Listener{
 	public void onInventoryClose(InventoryCloseEvent event) {
 		Player player = event.getPlayer();
 		Inventory inv = event.getInventory();
-		if(getMenuByPlayer(player.getUniqueId()) != null) {
-			InventoryMenu menu = getMenuByPlayer(player.getUniqueId());
+		if(getMenuByPlayer(player.getServerId()) != null) {
+			InventoryMenu menu = getMenuByPlayer(player.getServerId());
 			menu.destroy(player);
 		}
 	}
@@ -87,8 +87,8 @@ public class InventoryMenuHandler implements Listener{
 				SlotChangeAction act = (SlotChangeAction) action;
 				if (act.getInventory().getHolder() instanceof Player) {
 					Player p = (Player) act.getInventory().getHolder();
-					if(getMenuByPlayer(p.getUniqueId()) != null) {
-						InventoryMenu menu = getMenuByPlayer(p.getUniqueId());
+					if(getMenuByPlayer(p.getServerId()) != null) {
+						InventoryMenu menu = getMenuByPlayer(p.getServerId());
 						if(menu.onlyRead()) {
 							event.setCancelled();
 						}
