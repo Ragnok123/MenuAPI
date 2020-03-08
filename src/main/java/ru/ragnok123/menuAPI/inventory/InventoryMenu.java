@@ -76,8 +76,12 @@ public class InventoryMenu {
 	}
 	
 	public void forceDestroy(@NonNull Player player) {
-		player.removeWindow(getInventory(player.getUniqueId()));
-		destroy(player);
+		player.getServer().getScheduler().scheduleDelayedTask(new Runnable() {
+			public void run() {
+				player.removeWindow(getInventory(player.getUniqueId()));
+				destroy(player);
+			}
+		},20);
 	}
 	
 	public void setMainCategory(@NonNull InventoryCategory category) {

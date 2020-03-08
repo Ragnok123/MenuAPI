@@ -14,7 +14,7 @@ public class ItemData {
 		this(id,0);
 	}
 	public ItemData(int id, int damage) {
-		this(id,damage,0);
+		this(id,damage,1);
 	}
 	public ItemData(int id,int damage,int count) {
 		this(id,damage,count,"Name");
