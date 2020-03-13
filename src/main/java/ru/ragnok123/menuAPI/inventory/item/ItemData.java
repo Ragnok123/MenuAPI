@@ -1,4 +1,4 @@
-package ru.ragnok123.menuAPI.inventory;
+package ru.ragnok123.menuAPI.inventory.item;
 
 import cn.nukkit.item.Item;
 

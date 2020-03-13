@@ -1,4 +1,4 @@
-package ru.ragnok123.menuAPI.inventory;
+package ru.ragnok123.menuAPI.inventory.utils;
 
 import cn.nukkit.inventory.ContainerInventory;
 import cn.nukkit.inventory.Inventory;
@@ -6,6 +6,9 @@ import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.InventoryType;
 import cn.nukkit.item.Item;
 import cn.nukkit.math.Vector3;
+import ru.ragnok123.menuAPI.inventory.InventoryCategory;
+import ru.ragnok123.menuAPI.inventory.InventoryMenu;
+import ru.ragnok123.menuAPI.inventory.item.ItemData;
 
 import java.util.Map;
 

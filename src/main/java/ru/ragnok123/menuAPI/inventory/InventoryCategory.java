@@ -4,18 +4,15 @@ import java.util.HashMap;
 
 import cn.nukkit.item.Item;
 import lombok.NonNull;
+import ru.ragnok123.menuAPI.inventory.item.ItemClick;
+import ru.ragnok123.menuAPI.inventory.item.ItemData;
 
 public class InventoryCategory {
 	
-	private InventoryMenu menu = null;
+	public InventoryMenu menu = null;
 	
 	private HashMap<Integer, ItemData> itemData = new HashMap<Integer,ItemData>();
 	private HashMap<Integer, ItemClick> itemClick = new HashMap<Integer,ItemClick>();
-	
-	
-	public void setMenu(InventoryMenu menu) {
-		this.menu = menu;
-	}
 	
 	public HashMap<Integer,ItemData> itemDataMap(){
 		return this.itemData;

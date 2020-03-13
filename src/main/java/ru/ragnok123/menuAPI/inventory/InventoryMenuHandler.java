@@ -15,13 +15,11 @@ import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import lombok.NonNull;
+import ru.ragnok123.menuAPI.inventory.utils.MenuInventory;
 
 import java.util.*;
 
 public class InventoryMenuHandler implements Listener{
-	
-	public InventoryMenuHandler() {
-	}
 	
 	public static HashMap<String, InventoryMenu> menus = new HashMap<String, InventoryMenu>();
 	public static HashMap<UUID, InventoryMenu> pmenus = new HashMap<UUID, InventoryMenu>();

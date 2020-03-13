@@ -14,6 +14,8 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.BlockEntityDataPacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 import lombok.NonNull;
+import ru.ragnok123.menuAPI.inventory.item.ItemData;
+import ru.ragnok123.menuAPI.inventory.utils.MenuInventory;
 
 public class InventoryMenu {
 
@@ -85,6 +87,7 @@ public class InventoryMenu {
 	}
 	
 	public void setMainCategory(@NonNull InventoryCategory category) {
+		category.menu = this;
 		this.category = category;
 	}
 	
@@ -96,6 +99,7 @@ public class InventoryMenu {
 		if(categories.containsKey(id)) {
 			return;
 		}
+		category.menu = this;
 		categories.put(id, category);
 	}
 	
