@@ -2,6 +2,7 @@ package ru.ragnok123.menuAPI.form.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.element.ElementButton;
@@ -65,6 +66,11 @@ public class SimpleFormMenu implements FormMenu{
 		return this.responses.get(button);
 	}
 	
+	private int num = 0;
+	public Integer getId() {
+		return this.num;
+	}
+	
 	public void show(@NonNull Player player) {
 		FormMenuHandler.pmenus.put(player.getUniqueId(),this);
 		FormWindowSimple simple = new FormWindowSimple(this.getTitle(),this.getContent());
@@ -75,7 +81,9 @@ public class SimpleFormMenu implements FormMenu{
 				simple.addButton(new ElementButton(button.getText()));
 			}	
 		}
-		player.showFormWindow(simple);
+		Random rand = new Random();
+		num = rand.nextInt(1000000000);
+		player.showFormWindow(simple,num);
 	}
 	
 	@Override

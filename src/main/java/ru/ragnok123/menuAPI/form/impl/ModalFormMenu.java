@@ -1,5 +1,7 @@
 package ru.ragnok123.menuAPI.form.impl;
 
+import java.util.Random;
+
 import cn.nukkit.Player;
 import cn.nukkit.form.window.FormWindowModal;
 import lombok.NonNull;
@@ -39,11 +41,18 @@ public class ModalFormMenu implements FormMenu {
 		}
 	}
 	
+	private int num = 0;
+	public Integer getId() {
+		return this.num;
+	}
+	
 	@Override
 	public void show(Player player) {
 		FormMenuHandler.pmenus.put(player.getUniqueId(),this);
 		FormWindowModal modal = new FormWindowModal(this.getTitle(),this.getContent(),but1.getText(),but2.getText());
-		player.showFormWindow(modal);
+		Random rand = new Random();
+		num = rand.nextInt(1000000000);
+		player.showFormWindow(modal,num);
 	}
 	
 	public Button getButton(int id) {

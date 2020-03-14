@@ -3,6 +3,7 @@ package ru.ragnok123.menuAPI.form.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.element.ElementDropdown;
@@ -88,6 +89,11 @@ public class CustomFormMenu implements FormMenu {
 	}
 	
 	
+	private int num = 0;
+	public Integer getId() {
+		return this.num;
+	}
+	
 	@Override
 	public void show(Player player) {
 		FormMenuHandler.pmenus.put(player.getUniqueId(),this);
@@ -95,7 +101,9 @@ public class CustomFormMenu implements FormMenu {
 		for(Element element : this.elements) {
 			custom.addElement(transformToElement(element));
 		}
-		player.showFormWindow(custom);
+		Random rand = new Random();
+		num = rand.nextInt(1000000000);
+		player.showFormWindow(custom,num);
 	}
 	
 	public cn.nukkit.form.element.Element transformToElement(Element element){

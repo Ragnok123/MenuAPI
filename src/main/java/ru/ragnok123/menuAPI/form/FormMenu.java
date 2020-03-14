@@ -10,6 +10,7 @@ public interface FormMenu {
 	
 	String getTitle();
 	
+	Integer getId();
 	void setEmptyResponse(FormGlobalResponse response);
 	FormGlobalResponse getEmptyResponse();
 }

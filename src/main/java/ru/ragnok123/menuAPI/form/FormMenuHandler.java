@@ -63,37 +63,39 @@ public class FormMenuHandler implements Listener{
 		FormResponse response = window.getResponse();
 		if(getMenuByPlayer(player.getUniqueId()) != null) {
 			FormMenu menu = getMenuByPlayer(player.getUniqueId());
-			pmenus.remove(player.getUniqueId());
-			if(window instanceof FormWindowSimple) {
-				SimpleFormMenu simple = (SimpleFormMenu) menu;
-				if(response == null) {
-					simple.getEmptyResponse().handle(player);
-				} else {
-					Button button = simple.getButton(((FormResponseSimple)response).getClickedButtonId());
-					if(simple.hasResponse(button)) {
-						simple.getResponse(button).onResponse(player,button);
+			if(menu.getId() == formId) {
+				pmenus.remove(player.getUniqueId());
+				if(window instanceof FormWindowSimple) {
+					SimpleFormMenu simple = (SimpleFormMenu) menu;
+					if(response == null) {
+						simple.getEmptyResponse().handle(player);
+					} else {
+						Button button = simple.getButton(((FormResponseSimple)response).getClickedButtonId());
+						if(simple.hasResponse(button)) {
+							simple.getResponse(button).onResponse(player,button);
+						}
 					}
-				}
-			} else if(window instanceof FormWindowModal) {
-				ModalFormMenu modal = (ModalFormMenu)menu;
-				if(response == null) {
-					modal.getEmptyResponse().handle(player);
-				} else {
-					Button button = modal.getButton(((FormResponseModal)response).getClickedButtonId());
-					if(modal.hasResponse(button)) {
-						modal.getResponse(button).onResponse(player,button);
-					}
-				}
-			} else if(window instanceof FormWindowCustom) {
-				CustomFormMenu custom = (CustomFormMenu)menu;
-				if(response == null) {
-					custom.getEmptyResponse().handle(player);
-				} else {
-					FormResponseCustom customResponse = (FormResponseCustom)response;
-					for(int i : customResponse.getResponses().keySet()) {
-						Element element = custom.getElement(i);
-						if(custom.hasResponse(element)) {
-							custom.getResponse(element).onHandle(player,element,customResponse.getResponse(i));
+				} else if(window instanceof FormWindowModal) {
+					ModalFormMenu modal = (ModalFormMenu)menu;
+						if(response == null) {
+							modal.getEmptyResponse().handle(player);
+						} else {
+							Button button = modal.getButton(((FormResponseModal)response).getClickedButtonId());
+							if(modal.hasResponse(button)) {
+								modal.getResponse(button).onResponse(player,button);
+							}
+						}
+					} else if(window instanceof FormWindowCustom) {
+						CustomFormMenu custom = (CustomFormMenu)menu;
+						if(response == null) {
+							custom.getEmptyResponse().handle(player);
+					} else {
+						FormResponseCustom customResponse = (FormResponseCustom)response;
+						for(int i : customResponse.getResponses().keySet()) {
+							Element element = custom.getElement(i);
+							if(custom.hasResponse(element)) {
+								custom.getResponse(element).onHandle(player,element,customResponse.getResponse(i));
+							}
 						}
 					}
 				}
