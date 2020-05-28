@@ -67,7 +67,7 @@ public class FormMenuHandler implements Listener{
 				pmenus.remove(player.getUniqueId());
 				if(window instanceof FormWindowSimple) {
 					SimpleFormMenu simple = (SimpleFormMenu) menu;
-					if(response == null) {
+					if(response == null && simple.getEmptyResponse() != null) {
 						simple.getEmptyResponse().handle(player);
 					} else {
 						Button button = simple.getButton(((FormResponseSimple)response).getClickedButtonId());
@@ -77,7 +77,7 @@ public class FormMenuHandler implements Listener{
 					}
 				} else if(window instanceof FormWindowModal) {
 					ModalFormMenu modal = (ModalFormMenu)menu;
-						if(response == null) {
+						if(response == null && modal.getEmptyResponse() != null) {
 							modal.getEmptyResponse().handle(player);
 						} else {
 							Button button = modal.getButton(((FormResponseModal)response).getClickedButtonId());
@@ -87,7 +87,7 @@ public class FormMenuHandler implements Listener{
 						}
 					} else if(window instanceof FormWindowCustom) {
 						CustomFormMenu custom = (CustomFormMenu)menu;
-						if(response == null) {
+						if(response == null && custom.getEmptyResponse() != null) {
 							custom.getEmptyResponse().handle(player);
 					} else {
 						FormResponseCustom customResponse = (FormResponseCustom)response;
