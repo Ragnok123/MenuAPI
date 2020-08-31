@@ -3,7 +3,7 @@ package ru.ragnok123.menuAPI.form.impl.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stepslider implements Element {
+public class Stepslider extends Element {
 	
 	private String text = "";
 	private List<String> steps = new ArrayList<String>();

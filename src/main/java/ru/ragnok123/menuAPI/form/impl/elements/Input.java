@@ -1,6 +1,6 @@
 package ru.ragnok123.menuAPI.form.impl.elements;
 
-public class Input implements Element {
+public class Input extends Element {
 	
 	private String text = "";
 	private String defaultText;

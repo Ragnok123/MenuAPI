@@ -30,6 +30,7 @@ public class CustomFormMenu implements FormMenu {
 	
 	public void addDropdown(String text, List<String> options, DropdownResponse response) {
 		Dropdown dropdown = new Dropdown(text,options);
+		dropdown.setMenu(this);
 		this.elements.add(dropdown);
 		if(response != null) {
 			this.responses.put(dropdown,response);
@@ -42,6 +43,7 @@ public class CustomFormMenu implements FormMenu {
 	
 	public void addInput(String text, String def, InputResponse response) {
 		Input input = new Input(text,def);
+		input.setMenu(this);
 		this.elements.add(input);
 		if(response != null) {
 			this.responses.put(input,response);
@@ -54,6 +56,7 @@ public class CustomFormMenu implements FormMenu {
 	
 	public void addSlider(String text, int min, int max, SliderResponse response) {
 		Slider slider = new Slider(text,min,max);
+		slider.setMenu(this);
 		this.elements.add(slider);
 		if(response != null) {
 			this.responses.put(slider,response);
@@ -62,6 +65,7 @@ public class CustomFormMenu implements FormMenu {
 	
 	public void addStepslider(String text, List<String> options, StepsliderResponse response) {
 		Stepslider step = new Stepslider(text,options);
+		step.setMenu(this);
 		this.elements.add(step);
 		if(response != null) {
 			this.responses.put(step,response);
@@ -70,6 +74,7 @@ public class CustomFormMenu implements FormMenu {
 	
 	public void addToggle(String text, ToggleResponse response) {
 		Toggle toggle = new Toggle(text);
+		toggle.setMenu(this);
 		this.elements.add(toggle);
 		if(response != null) {
 			this.responses.put(toggle,response);

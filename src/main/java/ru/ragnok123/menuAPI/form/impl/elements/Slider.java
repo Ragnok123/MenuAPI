@@ -1,6 +1,6 @@
 package ru.ragnok123.menuAPI.form.impl.elements;
 
-public class Slider implements Element {
+public class Slider extends Element {
 	
 	private String text = "";
 	private float min = 0;

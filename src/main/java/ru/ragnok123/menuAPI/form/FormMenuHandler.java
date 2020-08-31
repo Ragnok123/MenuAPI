@@ -89,12 +89,12 @@ public class FormMenuHandler implements Listener{
 								modal.getResponse(button).onResponse(player,button);
 							}
 						}
-					} else if(window instanceof FormWindowCustom) {
-						CustomFormMenu custom = (CustomFormMenu)menu;
-						if(response == null) {
-							if(custom.getEmptyResponse() != null) {
-								custom.getEmptyResponse().handle(player);
-							}
+				} else if(window instanceof FormWindowCustom) {
+					CustomFormMenu custom = (CustomFormMenu)menu;
+					if(response == null) {
+						if(custom.getEmptyResponse() != null) {
+							custom.getEmptyResponse().handle(player);
+						}
 					} else {
 						FormResponseCustom customResponse = (FormResponseCustom)response;
 						for(int i : customResponse.getResponses().keySet()) {

@@ -3,7 +3,7 @@ package ru.ragnok123.menuAPI.form.impl.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dropdown implements Element {
+public class Dropdown extends Element {
 	
 	private String text = "";
 	private List<String> options = new ArrayList<String>();

@@ -1,6 +1,6 @@
 package ru.ragnok123.menuAPI.form.impl.elements;
 
-public class Toggle implements Element {
+public class Toggle extends Element {
 	
 	private String text = "";
 	

@@ -1,6 +1,6 @@
 package ru.ragnok123.menuAPI.form.impl.elements;
 
-public class Label implements Element {
+public class Label extends Element {
 	
 	public Label(String label) {
 		this.label = label;
