@@ -83,12 +83,15 @@ public class InventoryMenuHandler implements Listener{
 		for (InventoryAction action : trans.getActions()) {
 			if (action instanceof SlotChangeAction) {
 				SlotChangeAction act = (SlotChangeAction) action;
-				if (act.getInventory().getHolder() instanceof Player) {
-					Player p = (Player) act.getInventory().getHolder();
-					if(getMenuByPlayer(p.getUniqueId()) != null) {
-						InventoryMenu menu = getMenuByPlayer(p.getUniqueId());
-						if(menu.onlyRead()) {
-							event.setCancelled();
+				if(act.getInventory() instanceof MenuInventory) {
+					MenuInventory inv = (MenuInventory) act.getInventory();
+					if(inv.getOwner() instanceof Player) {
+						Player p = inv.getOwner();
+						if(getMenuByPlayer(p.getUniqueId()) != null) {
+							InventoryMenu menu = getMenuByPlayer(p.getUniqueId());
+							if(menu.onlyRead()) {
+								event.setCancelled();
+							}
 						}
 					}
 				}

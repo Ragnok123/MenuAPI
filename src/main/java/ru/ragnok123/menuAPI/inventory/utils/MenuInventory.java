@@ -6,15 +6,23 @@ import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.InventoryType;
 import cn.nukkit.item.Item;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.Player;
 import ru.ragnok123.menuAPI.inventory.InventoryCategory;
 import ru.ragnok123.menuAPI.inventory.InventoryMenu;
 import ru.ragnok123.menuAPI.inventory.item.ItemData;
 
+import lombok.Getter;
+
 import java.util.Map;
 
 public final class MenuInventory extends ContainerInventory {
-	public MenuInventory(Vector3 holder, InventoryMenu menu) {
+	
+	@Getter
+	private Player owner = null;
+	
+	public MenuInventory(Player owner, Vector3 holder, InventoryMenu menu) {
 		super(new Holder(holder.x, holder.y, holder.z), InventoryType.CHEST);
+		this.owner = owner;
 		InventoryCategory category = menu.getMainCategory();
 		for(Map.Entry<Integer,ItemData> entry : category.itemDataMap().entrySet()) {
 			int position = entry.getKey();

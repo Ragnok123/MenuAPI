@@ -38,7 +38,7 @@ public class InventoryMenu {
 	
 	public void show(@NonNull Player player) {
 		Vector3 vec = createInventory(player);
-		MenuInventory inv = new MenuInventory(vec,this);
+		MenuInventory inv = new MenuInventory(player,vec,this);
 		player.addWindow(inv);
 		inventories.put(player.getUniqueId(), inv);
 		InventoryMenuHandler.pmenus.put(player.getUniqueId(),this);
