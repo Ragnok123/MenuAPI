@@ -4,11 +4,23 @@ import cn.nukkit.form.element.ElementButtonImageData;
 
 public class Button {
 	
-	public static String METHOD_URL = ElementButtonImageData.IMAGE_DATA_TYPE_URL;
-	public static String METHOD_PATH = ElementButtonImageData.IMAGE_DATA_TYPE_PATH;
+	public enum PathMethod {
+		URL(ElementButtonImageData.IMAGE_DATA_TYPE_URL),
+		PATH(ElementButtonImageData.IMAGE_DATA_TYPE_PATH);
+		
+		private String method;
+		
+		PathMethod(String method){
+			this.method = method;
+		}
+		
+		public String getMethod() {
+			return this.method;
+		}
+	}
 	
 	private String text = null;
-	private String method = null;
+	private PathMethod method = null;
 	private String url = null;
 	
 	
@@ -16,7 +28,7 @@ public class Button {
 		this.text = text;
 	}
 	
-	public Button(String text, String method, String url) {
+	public Button(String text, PathMethod method, String url) {
 		this.text = text;
 		this.method = method;
 		this.url = url;
@@ -30,7 +42,7 @@ public class Button {
 		return this.method != null;
 	}
 	
-	public String getMethod() {
+	public PathMethod getMethod() {
 		return this.method;
 	}
 	public String getUrl() {

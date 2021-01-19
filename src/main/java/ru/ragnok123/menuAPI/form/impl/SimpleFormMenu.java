@@ -12,6 +12,7 @@ import lombok.NonNull;
 import ru.ragnok123.menuAPI.form.FormMenu;
 import ru.ragnok123.menuAPI.form.FormMenuHandler;
 import ru.ragnok123.menuAPI.form.impl.elements.Button;
+import ru.ragnok123.menuAPI.form.impl.elements.Button.PathMethod;
 import ru.ragnok123.menuAPI.form.impl.response.ButtonResponse;
 import ru.ragnok123.menuAPI.form.impl.response.FormGlobalResponse;
 
@@ -32,7 +33,7 @@ public class SimpleFormMenu implements FormMenu{
 		addButton(text,null,null,response);
 	}
 	
-	public void addButton(String text, String method, String url, ButtonResponse response) {
+	public void addButton(String text, PathMethod method, String url, ButtonResponse response) {
 		Button b;
 		if(method != null) {
 			b = new Button(text,method,url);
@@ -76,7 +77,7 @@ public class SimpleFormMenu implements FormMenu{
 		FormWindowSimple simple = new FormWindowSimple(this.getTitle(),this.getContent());
 		for(Button button : buttons) {
 			if(button.hasImage()) {
-				simple.addButton(new ElementButton(button.getText(), new ElementButtonImageData(button.getMethod(),button.getUrl())));
+				simple.addButton(new ElementButton(button.getText(), new ElementButtonImageData(button.getMethod().getMethod(), button.getUrl())));
 			} else {
 				simple.addButton(new ElementButton(button.getText()));
 			}	
