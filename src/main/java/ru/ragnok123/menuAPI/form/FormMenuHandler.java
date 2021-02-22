@@ -103,6 +103,7 @@ public class FormMenuHandler implements Listener{
 								custom.getResponse(element).onHandle(player,element,customResponse.getResponse(i));
 							}
 						}
+						custom.getCallbackResponse().accept(player);
 					}
 				}
 			}

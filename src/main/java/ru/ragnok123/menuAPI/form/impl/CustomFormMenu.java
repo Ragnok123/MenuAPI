@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.element.ElementDropdown;
@@ -23,6 +24,7 @@ public class CustomFormMenu implements FormMenu {
 	private String title = "";
 	private ArrayList<Element> elements = new ArrayList<Element>();
 	private HashMap<Element, ElementResponse> responses = new HashMap<Element, ElementResponse>();
+	private Consumer<Player> callbackResponse;
 	
 	public CustomFormMenu(String title) {
 		this.title = title;
@@ -135,6 +137,14 @@ public class CustomFormMenu implements FormMenu {
 			return new ElementToggle(toggle.getText());
 		}
 		return null;
+	}
+	
+	public void setCallbackResponse(Consumer<Player> consumer) {
+		this.callbackResponse = consumer;
+	}
+	
+	public Consumer<Player> getCallbackResponse(){
+		return this.callbackResponse;
 	}
 
 	@Override
