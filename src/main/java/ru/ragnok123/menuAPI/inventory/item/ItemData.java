@@ -41,5 +41,9 @@ public class ItemData {
 		return item;
 	}
 	
+	public static ItemData fromItem(Item item) {
+		return new ItemData(item.getId(), item.getDamage(), item.getCount(), item.getCustomName(), item.getLore());
+	}
+	
 
 }

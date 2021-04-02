@@ -12,6 +12,7 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.BlockEntityDataPacket;
+import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 import lombok.NonNull;
 import ru.ragnok123.menuAPI.inventory.item.ItemData;
@@ -80,7 +81,10 @@ public class InventoryMenu {
 	public void forceDestroy(@NonNull Player player) {
 		player.getServer().getScheduler().scheduleDelayedTask(new Runnable() {
 			public void run() {
-				player.removeWindow(getInventory(player.getUniqueId()));
+				//player.removeWindow(getInventory(player.getUniqueId()));
+				ContainerClosePacket pk = new ContainerClosePacket();
+				pk.windowId = player.getWindowId(inventories.get(player.getUniqueId()));
+				pk.wasServerInitiated = true;
 				destroy(player);
 			}
 		},20);
