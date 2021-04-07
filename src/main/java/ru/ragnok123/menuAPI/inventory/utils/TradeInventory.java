@@ -11,6 +11,7 @@ import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.InventoryType;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.NBTIO;
+import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
@@ -27,6 +28,7 @@ public class TradeInventory extends BaseInventory {
 	}
 	
 	public void onOpen(Player player) {
+		super.onOpen(player);
 		long eid = menu.getUid();
 		
 		AddEntityPacket aep = new AddEntityPacket();
@@ -43,12 +45,14 @@ public class TradeInventory extends BaseInventory {
 				.putInt(Entity.DATA_TRADE_TIER, menu.getTraderTier())
 				.putInt(Entity.DATA_TRADE_EXPERIENCE, menu.getExperience())
 				.putInt(Entity.DATA_MAX_TRADE_TIER, menu.getMaxTradeTier())
-				.putLong(Entity.DATA_TRADING_PLAYER_EID, player.getId());
+				.putLong(Entity.DATA_TRADING_PLAYER_EID, player.getId())
+				.putFloat(Entity.DATA_SCALE, 0.01F);
 		player.dataPacket(aep);
 		
 		UpdateTradePacket pk = new UpdateTradePacket();
 		pk.windowId = (byte) player.getWindowId(this);
-		pk.windowType = 15;
+		pk.windowType = (byte) InventoryType.TRADING.getNetworkType();
+		pk.unknownVarInt1 = 0;
 		pk.displayName = menu.getTraderName();
 		pk.screen2 = true;
 		pk.isWilling = true;
@@ -56,7 +60,7 @@ public class TradeInventory extends BaseInventory {
 		pk.tradeTier = menu.getTraderTier();
 		pk.player = player.getId();
 		try {
-			pk.offers = NBTIO.write(menu.getOffers(),ByteOrder.LITTLE_ENDIAN);
+			pk.offers = NBTIO.write(menu.getOffers(),ByteOrder.LITTLE_ENDIAN, true);
 		} catch(IOException ex) {}
 		player.dataPacket(pk);
 	}
@@ -80,6 +84,8 @@ public class TradeInventory extends BaseInventory {
 		RemoveEntityPacket pk = new RemoveEntityPacket();
 		pk.eid = menu.getUid();
 		player.dataPacket(pk);
+		
+		super.onClose(player);
 	}
 	
 	public String getName() {

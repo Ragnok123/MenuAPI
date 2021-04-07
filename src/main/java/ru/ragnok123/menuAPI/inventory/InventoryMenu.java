@@ -6,6 +6,7 @@ import java.util.*;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.level.GlobalBlockPalette;
 import cn.nukkit.math.Vector3;
@@ -16,6 +17,7 @@ import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 import lombok.NonNull;
 import ru.ragnok123.menuAPI.inventory.item.ItemData;
+import ru.ragnok123.menuAPI.inventory.utils.MenuDoubleInventory;
 import ru.ragnok123.menuAPI.inventory.utils.MenuInventory;
 
 public class InventoryMenu {
@@ -25,6 +27,7 @@ public class InventoryMenu {
 	private InventoryCategory currentCategory = null;
 	private HashMap<UUID,Inventory> inventories = new HashMap<UUID,Inventory>();
 	private String name = "Menu";
+	private boolean isDouble = false;
 	private boolean read = true;
 	
 	public void setName(String name) { this.name = name; }
@@ -39,42 +42,88 @@ public class InventoryMenu {
 	
 	public void show(@NonNull Player player) {
 		Vector3 vec = createInventory(player);
-		MenuInventory inv = new MenuInventory(player,vec,this);
-		player.addWindow(inv);
-		inventories.put(player.getUniqueId(), inv);
-		InventoryMenuHandler.pmenus.put(player.getUniqueId(),this);
-		openMainCategory(player);
+		MenuInventory inv = isDoubleChest() ? new MenuDoubleInventory(player, vec, this) : new MenuInventory(player,vec,this);
+		player.getServer().getScheduler().scheduleDelayedTask(() -> {
+			player.addWindow(inv);
+			inventories.put(player.getUniqueId(), inv);
+			InventoryMenuHandler.pmenus.put(player.getUniqueId(),this);
+			openMainCategory(player);
+		},10);
 	}
 	
 	private Vector3 createInventory(Player player) {
+		Vector3 pos = new Vector3((int)player.getX(), (int)player.getY() - 2, (int)player.getZ());
+		spawnChest(player, pos);
+		if(isDoubleChest()) {
+			Vector3 pos2 = pos.clone().add(1,0,0);
+			spawnChest(player, pos2);
+			
+			pairChests(player, pos, pos2);
+			pairChests(player,pos2, pos);
+		}
+
+        return new Vector3(player.x, player.y - 2, player.z);
+	}
+	
+	private void pairChests(Player player, Vector3 pos1, Vector3 pos2) {
+		BlockEntityDataPacket pk = new BlockEntityDataPacket();
+		pk.x = (int) pos1.x;
+		pk.y = (int) pos1.y;
+		pk.z = (int) pos1.z;
+		
+		CompoundTag nbt = new CompoundTag();
+        nbt.putString("CustomName", getName());
+        nbt.putInt("x", (int)pos1.x);
+        nbt.putInt("y", (int)pos1.y);
+        nbt.putInt("z", (int)pos1.z);
+        nbt.putInt("pairx", (int)pos2.x);
+        nbt.putInt("pairz", (int)pos2.z);
+        nbt.putString("id", BlockEntity.CHEST);
+        try {
+            pk.namedTag = NBTIO.write(nbt, ByteOrder.LITTLE_ENDIAN, true);
+        } catch (IOException ex) {
+        }
+        player.dataPacket(pk);
+	}
+	
+	private void spawnChest(Player player, Vector3 pos) {
 		UpdateBlockPacket pk1 = new UpdateBlockPacket();
-        pk1.x = (int) player.x;
-        pk1.y = (int) player.y - 2;
-        pk1.z = (int) player.z;
+        pk1.x = (int) pos.x;
+        pk1.y = (int) pos.y;
+        pk1.z = (int) pos.z;
         pk1.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(Block.CHEST,0);
         pk1.dataLayer = 0;
         pk1.flags = UpdateBlockPacket.FLAG_NONE;
         player.dataPacket(pk1);
 
         BlockEntityDataPacket pk2 = new BlockEntityDataPacket();
-        pk2.x = (int) player.x;
-        pk2.y = (int) player.y - 2;
-        pk2.z = (int) player.z;
+        pk2.x = (int) pos.x;
+        pk2.y = (int) pos.y;
+        pk2.z = (int) pos.z;
+        
         CompoundTag nbt = new CompoundTag();
         nbt.putString("CustomName", getName());
+        nbt.putInt("x", (int)pos.x);
+        nbt.putInt("y", (int)pos.y);
+        nbt.putInt("z", (int)pos.z);
+        nbt.putString("id", BlockEntity.CHEST);
 
         try {
             pk2.namedTag = NBTIO.write(nbt, ByteOrder.LITTLE_ENDIAN, true);
         } catch (IOException ex) {
         }
         player.dataPacket(pk2);
-        return new Vector3(player.x, player.y - 2, player.z);
 	}
 	
 	public void destroy(@NonNull Player player) {
 		inventories.remove(player.getUniqueId());
 		InventoryMenuHandler.pmenus.remove(player.getUniqueId());
 		Vector3 vec = new Vector3(player.x, player.y -2, player.z);
+		if(isDoubleChest()) {
+			Vector3 vec1 = vec.add(1,0,0);
+			player.level.sendBlocks(new Player[] {player}, new Vector3[] {vec, vec1});
+			return;
+		}
 		player.level.sendBlocks(new Player[] {player}, new Vector3[] {vec});
 	}
 	
@@ -87,7 +136,15 @@ public class InventoryMenu {
 				pk.wasServerInitiated = true;
 				destroy(player);
 			}
-		},20);
+		},1);
+	}
+	
+	public void setDoubleChest() {
+		this.isDouble = true;
+	}
+	
+	public boolean isDoubleChest() {
+		return this.isDouble;
 	}
 	
 	public void setMainCategory(@NonNull InventoryCategory category) {

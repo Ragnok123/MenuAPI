@@ -1,6 +1,7 @@
 package ru.ragnok123.menuAPI.trade;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Utils;
 import lombok.Getter;
@@ -14,13 +15,13 @@ public class TradeRecipe {
 	@Getter
 	private Item secondBuyItem;
 	
-	private int tier = -1;
+	private int tier = 0;
 	private int maxUses = 999;
 	private int buyCountA = 0;
 	private int buyCountB = 0;
 	private int uses = 0;
 	private int demand = 0;
-	private int rewardsExp = 0;
+	private byte rewardsExp = (byte) 0;
 	private int traderExp = 0;
 	private float priceMultiplierA = 0F;
 	private float priceMultiplierB = 0F;
@@ -60,15 +61,17 @@ public class TradeRecipe {
 	
 	public CompoundTag toNBT() {
 		CompoundTag nbt = new CompoundTag();
-		nbt.putCompound("buyA", putItemHelper(buyItem, -1, "buyA"));
-		nbt.putCompound("buyB", putItemHelper(secondBuyItem,-1, "buyB"));
-		nbt.putCompound("sell", putItemHelper(sellItem, -1, "sell"));
+		nbt.putCompound("buyA", NBTIO.putItemHelper(buyItem, -1));
+		if(secondBuyItem != null) {
+			nbt.putCompound("buyB", NBTIO.putItemHelper(secondBuyItem,-1));
+		}
+		nbt.putCompound("sell", NBTIO.putItemHelper(sellItem, -1));
 		nbt.putInt("tier", tier);
 		nbt.putInt("buyCountA", buyCountA);
 		nbt.putInt("buyCountB", buyCountB);
 		nbt.putInt("uses", uses);
 		nbt.putInt("maxUses", maxUses);
-		nbt.putInt("rewardExp", rewardsExp);
+		nbt.putByte("rewardExp", rewardsExp);
 		nbt.putInt("demand", demand);
 		nbt.putInt("traderExp", traderExp);
 		nbt.putFloat("priceMultiplierA", priceMultiplierA);

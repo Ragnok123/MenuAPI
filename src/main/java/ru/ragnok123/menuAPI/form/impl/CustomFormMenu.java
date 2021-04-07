@@ -143,6 +143,10 @@ public class CustomFormMenu implements FormMenu {
 		this.callbackResponse = consumer;
 	}
 	
+	public boolean hasCallbackResponse() {
+		return this.callbackResponse != null;
+	}
+	
 	public Consumer<Player> getCallbackResponse(){
 		return this.callbackResponse;
 	}
