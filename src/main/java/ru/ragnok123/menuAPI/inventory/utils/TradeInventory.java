@@ -2,6 +2,7 @@ package ru.ragnok123.menuAPI.inventory.utils;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
+import java.util.HashMap;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -23,7 +24,7 @@ public class TradeInventory extends BaseInventory {
 	public TradeMenu menu;
 	
 	public TradeInventory(InventoryHolder holder, TradeMenu menu) {
-		super(holder, InventoryType.TRADING);
+		super(holder, InventoryType.CHEST, new HashMap<>(), 3);
 		this.menu = menu;
 	}
 	
@@ -51,7 +52,7 @@ public class TradeInventory extends BaseInventory {
 		
 		UpdateTradePacket pk = new UpdateTradePacket();
 		pk.windowId = (byte) player.getWindowId(this);
-		pk.windowType = (byte) InventoryType.TRADING.getNetworkType();
+		pk.windowType = (byte) 15;
 		pk.unknownVarInt1 = 0;
 		pk.displayName = menu.getTraderName();
 		pk.screen2 = true;

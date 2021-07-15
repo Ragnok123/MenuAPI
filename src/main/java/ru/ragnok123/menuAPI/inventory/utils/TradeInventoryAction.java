@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
-import cn.nukkit.inventory.transaction.action.TradeAction;
 import cn.nukkit.network.protocol.types.NetworkInventoryAction;
 import ru.ragnok123.menuAPI.trade.TradeMenuHandler;
 
