@@ -2,6 +2,7 @@ import java.awt.Button;
 
 import ru.ragnok123.menuAPI.form.impl.CustomFormMenu;
 import ru.ragnok123.menuAPI.form.impl.SimpleFormMenu;
+import ru.ragnok123.menuAPI.form.impl.response.InputResponse;
 
 public class FormMenuExample {
 	
@@ -29,9 +30,9 @@ public class FormMenuExample {
 		menu.addInput("Password", new PasswordResponse());
 		menu.addInput("Confirm password", new PasswordResponse());
 		menu.setCallbackResponse(p -> {
-			PasswordResponse response = (PasswordResponse) menu.getElement(1);
-			PasswordResponse secondResponse = (PasswordResponse) menu.getElement(2);
-			if(response.getPassword().equals(secondResponse.getPassword())) {
+			InputResponse response = (InputResponse) menu.getResponse(menu.getElement(0));
+			InputResponse secondResponse = (InputResponse) menu.getResponse(menu.getElement(1));
+			if(response.getResponse().equals(secondResponse.getResponse())) {
 				player.sendMessage("Passwords matches");
 			} else {
 				player.sendMessage("Password doesn't match");
@@ -42,15 +43,4 @@ public class FormMenuExample {
 	
 }
 	
-class PasswordResponse extends InputResponse() {
-	
-	private String password;
-	
-	public void onResponse(Player player, Input input, String pwd) {
-		this.password = pwd;
-	}
-	
-	public String getPassword() {
-		return this.password;
-	}
-}
+
