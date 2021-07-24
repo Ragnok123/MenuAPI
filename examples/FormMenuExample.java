@@ -30,8 +30,8 @@ public class FormMenuExample {
 		menu.addInput("Password", new PasswordResponse());
 		menu.addInput("Confirm password", new PasswordResponse());
 		menu.setCallbackResponse(p -> {
-			InputResponse response = (InputResponse) menu.getResponse(menu.getElement(0));
-			InputResponse secondResponse = (InputResponse) menu.getResponse(menu.getElement(1));
+			InputResponse response = (InputResponse) menu.getResponse(menu.getElement(1));
+			InputResponse secondResponse = (InputResponse) menu.getResponse(menu.getElement(2));
 			if(response.getResponse().equals(secondResponse.getResponse())) {
 				player.sendMessage("Passwords matches");
 			} else {
