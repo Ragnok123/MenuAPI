@@ -9,7 +9,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.Player;
 import ru.ragnok123.menuAPI.inventory.InventoryCategory;
 import ru.ragnok123.menuAPI.inventory.InventoryMenu;
-import ru.ragnok123.menuAPI.inventory.item.ItemData;
 
 import lombok.Getter;
 
@@ -28,10 +27,10 @@ public class MenuInventory extends ContainerInventory {
 		super(new Holder(holder.x, holder.y, holder.z), type);
 		this.owner = owner;
 		InventoryCategory category = menu.getMainCategory();
-		for(Map.Entry<Integer,ItemData> entry : category.itemDataMap().entrySet()) {
+		for(Map.Entry<Integer,Item> entry : category.itemDataMap().entrySet()) {
 			int position = entry.getKey();
-			ItemData data = entry.getValue();
-			setItem(position, data.build());
+			Item data = entry.getValue();
+			setItem(position, data);
 		}
 	}
 

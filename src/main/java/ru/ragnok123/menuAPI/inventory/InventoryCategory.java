@@ -1,11 +1,14 @@
 package ru.ragnok123.menuAPI.inventory;
 
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 
+import cn.nukkit.Player;
 import cn.nukkit.item.Item;
+import lombok.Getter;
 import lombok.NonNull;
 import ru.ragnok123.menuAPI.inventory.item.ItemClick;
-import ru.ragnok123.menuAPI.inventory.item.ItemData;
+import ru.ragnok123.menuAPI.inventory.item.handler.ReceiveHandler;
 
 public class InventoryCategory {
 	
@@ -24,10 +27,19 @@ public class InventoryCategory {
 	
 	public String[] inventoryGui;
 	
-	private HashMap<Integer, ItemData> itemData = new HashMap<Integer,ItemData>();
+	private boolean read = true;
+	
+	@Getter
+	private boolean moveToPlayer = false;
+	@Getter
+	private boolean moveToChest = false;
+	
+	private ReceiveHandler handler;
+	
+	private HashMap<Integer, Item> itemData = new HashMap<Integer,Item>();
 	private HashMap<Integer, ItemClick> itemClick = new HashMap<Integer,ItemClick>();
 	
-	public HashMap<Integer,ItemData> itemDataMap(){
+	public HashMap<Integer,Item> itemDataMap(){
 		return this.itemData;
 	}
 	
@@ -35,7 +47,23 @@ public class InventoryCategory {
 		return this.menu;
 	}
 	
-	public void setStringElements(String[] elements, HashMap<Character, ItemData> itemDatas) {
+	public void allowToChest(boolean value) {
+		this.moveToChest = value;
+	}
+	
+	public void allowToPlayer(boolean value) {
+		this.moveToPlayer = value;
+	}
+	
+	public boolean onlyRead() {
+		return this.read;
+	}
+	
+	public void setOnlyRead(boolean value) {
+		this.read = value;
+	}
+	
+	public void setStringElements(String[] elements, HashMap<Character, Item> itemDatas) {
 		setStringElements(elements, itemDatas, null);
 	}
 	
@@ -43,7 +71,7 @@ public class InventoryCategory {
 		return (9 * line) + rowSlot;
 	}
 	
-	public void setStringElements(String[] elements, HashMap<Character, ItemData> itemDatas, HashMap<Character, ItemClick> itemClicks) {
+	public void setStringElements(String[] elements, HashMap<Character, Item> itemDatas, HashMap<Character, ItemClick> itemClicks) {
 		if(elements.length == 3 || elements.length == 6) {
 			this.inventoryGui = elements;
 			for(int line = 0; line < elements.length; line++) {
@@ -71,11 +99,11 @@ public class InventoryCategory {
 		}
 	}
 	
-	public void addElement(int position, @NonNull ItemData item) {
+	public void addElement(int position, @NonNull Item item) {
 		addElement(position,item,null);
 	}
 	
-	public void addElement(int position, @NonNull ItemData item, ItemClick click) {
+	public void addElement(int position, @NonNull Item item, ItemClick click) {
 		if(!itemData.containsKey(position)) {
 			itemData.put(position, item);
 			if(click != null) {
@@ -84,7 +112,22 @@ public class InventoryCategory {
 		}
 	}
 	
-	public ItemData getItemData(int position) {
+	public void replaceElement(int position, @NonNull Item item) {
+		replaceElement(position, item, null);
+	}
+	
+	public void replaceElement(int position, @NonNull Item item, ItemClick click) {
+		itemData.put(position, item);
+		if(click != null) {
+			itemClick.put(position, click);
+		} else {
+			if(itemClick.containsKey(position)) {
+				itemClick.remove(position);
+			}
+		}
+	}
+	
+	public Item getItemData(int position) {
 		if(this.itemData.containsKey(position)) {
 			return this.itemData.get(position);
 		}
@@ -96,6 +139,14 @@ public class InventoryCategory {
 			return this.itemClick.get(position);
 		}
 		return null;
+	}
+	
+	public void addHandler(ReceiveHandler handler) {
+		this.handler = handler;
+	}
+	
+	public ReceiveHandler getHandler() {
+		return this.handler;
 	}
 	
 }

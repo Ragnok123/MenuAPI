@@ -8,6 +8,7 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.inventory.Inventory;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.GlobalBlockPalette;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
@@ -15,8 +16,8 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.BlockEntityDataPacket;
 import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
+import lombok.Getter;
 import lombok.NonNull;
-import ru.ragnok123.menuAPI.inventory.item.ItemData;
 import ru.ragnok123.menuAPI.inventory.utils.MenuDoubleInventory;
 import ru.ragnok123.menuAPI.inventory.utils.MenuInventory;
 
@@ -28,7 +29,6 @@ public class InventoryMenu {
 	private HashMap<UUID,Inventory> inventories = new HashMap<UUID,Inventory>();
 	private String name = "Menu";
 	private boolean isDouble = false;
-	private boolean read = true;
 	
 	public void setName(String name) { this.name = name; }
 	public String getName() { return this.name; }
@@ -182,14 +182,24 @@ public class InventoryMenu {
 		return this.currentCategory;
 	}
 	
+	public void updateContents(Player p) {
+		Inventory inventory = inventories.get(p.getUniqueId());
+		inventory.clearAll();
+		for(Map.Entry<Integer,Item> entry : category.itemDataMap().entrySet()) {
+			int position = entry.getKey();
+			Item data = entry.getValue();
+			inventory.setItem(position, data);
+		}
+	}
+	
 	public void openMainCategory(Player player) {
 		InventoryCategory category = this.category;
 		Inventory inventory = inventories.get(player.getUniqueId());
 		inventory.clearAll();
-		for(Map.Entry<Integer,ItemData> entry : category.itemDataMap().entrySet()) {
+		for(Map.Entry<Integer,Item> entry : category.itemDataMap().entrySet()) {
 			int position = entry.getKey();
-			ItemData data = entry.getValue();
-			inventory.setItem(position, data.build());
+			Item data = entry.getValue();
+			inventory.setItem(position, data);
 		}
 		this.currentCategory = category;
 	}
@@ -199,21 +209,12 @@ public class InventoryMenu {
 			InventoryCategory category = categories.get(id);
 			Inventory inventory = inventories.get(player.getUniqueId());
 			inventory.clearAll();
-			for(Map.Entry<Integer,ItemData> entry : category.itemDataMap().entrySet()) {
+			for(Map.Entry<Integer,Item> entry : category.itemDataMap().entrySet()) {
 				int position = entry.getKey();
-				ItemData data = entry.getValue();
-				inventory.setItem(position, data.build());
+				Item data = entry.getValue();
+				inventory.setItem(position, data);
 			}
 			this.currentCategory = category;
 		}
 	}
-	
-	public boolean onlyRead() {
-		return this.read;
-	}
-	
-	public void setOnlyRead(boolean value) {
-		this.read = value;
-	}
-	
 }
