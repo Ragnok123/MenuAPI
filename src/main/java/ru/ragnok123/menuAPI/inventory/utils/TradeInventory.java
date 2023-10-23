@@ -51,18 +51,16 @@ public class TradeInventory extends BaseInventory {
 		player.dataPacket(aep);
 		
 		UpdateTradePacket pk = new UpdateTradePacket();
-		pk.windowId = (byte) player.getWindowId(this);
-		pk.windowType = (byte) 15;
-		pk.unknownVarInt1 = 0;
+		pk.containerId = (byte) player.getWindowId(this);
+		pk.containerType = (byte) 15;
+		pk.size = 0;
 		pk.displayName = menu.getTraderName();
-		pk.screen2 = true;
-		pk.isWilling = true;
-		pk.trader = eid;
+		pk.newTradingUi = true;
+		pk.usingEconomyTrade = true;
+		pk.traderUniqueEntityId = eid;
 		pk.tradeTier = menu.getTraderTier();
-		pk.player = player.getId();
-		try {
-			pk.offers = NBTIO.write(menu.getOffers(),ByteOrder.LITTLE_ENDIAN, true);
-		} catch(IOException ex) {}
+		pk.playerUniqueEntityId = player.getId();
+		pk.offers = menu.getOffers();
 		player.dataPacket(pk);
 	}
 	
